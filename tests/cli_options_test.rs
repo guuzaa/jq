@@ -170,3 +170,21 @@ fn test_invalid_combined_option() {
         .failure()
         .stderr(predicate::str::contains("Unknown option: -X"));
 }
+
+#[test]
+fn test_field_contains_escape_characters() {
+    let test_file = TestFile::new(
+        r#"{
+         "stdout": "rustc 1.85.0 (4d91de4e4 2025-02-17)\nbinary: rustc\ncommit-hash: 4d91de4e48198da2e33413efdcd9cd2cc0c4668\n"
+       }"#,
+    );
+    JqCommand::new()
+        .args(&["-c", ".", test_file.path()])
+        .assert()
+        .success()
+        .stdout(function(|output: &str| {
+            let output = output.trim();
+            println!("output: {}", output);
+            output == r#"{"stdout":"rustc 1.85.0 (4d91de4e4 2025-02-17)\nbinary: rustc\ncommit-hash: 4d91de4e48198da2e33413efdcd9cd2cc0c4668\n"}"#
+        }));
+}

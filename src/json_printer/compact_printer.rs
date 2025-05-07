@@ -2,6 +2,7 @@ use std::fmt::Write;
 
 use super::JsonPrinter;
 use crate::json_parser::JSONValue;
+use crate::json_printer::utils;
 
 // Printer for compact output
 pub(super) struct CompactPrinter {
@@ -16,7 +17,7 @@ impl JsonPrinter for CompactPrinter {
             JSONValue::True => write!(output, "true").unwrap(),
             JSONValue::False => write!(output, "false").unwrap(),
             JSONValue::Number(n) => write!(output, "{}", n).unwrap(),
-            JSONValue::String(s) => write!(output, "\"{}\"", s).unwrap(),
+            JSONValue::String(s) => write!(output, "{}", utils::print_string(s)).unwrap(),
             JSONValue::Array(arr) => {
                 if arr.is_empty() {
                     write!(output, "[]").unwrap();

@@ -2,6 +2,7 @@ use crate::json_parser::JSONValue;
 
 mod compact_printer;
 mod pretty_printer;
+mod utils;
 
 use compact_printer::CompactPrinter;
 use pretty_printer::PrettyPrinter;
